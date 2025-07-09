@@ -15,7 +15,7 @@ HackOrbit-Day-2 09-july-2025
 ---
 
 <p align="center">
-  <img src="logo(2).png" width="80%" alt="Logo">
+  <img src="logo (2).png" width="80%" alt="Logo">
 </p>
 
 
