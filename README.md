@@ -14,9 +14,10 @@ cp-3 -> 3rd commit at 6 PM finalise the project
 
 # Dev.env-ResourceX
 <p align="center">
-  <a href="https://youtu.be/b3HCJWUALpQ" target="_blank">
-    <img src="assets/ChatGPT Image May 29, 2025 at 03_26_37 PM.png" alt="Watch the Demo Video" width="720">
-  </a>
+<a href="https://drive.google.com/file/d/1IJS0NevdinO0FMelMn3gjSyDxQX4UWoL/view?usp=drive_link">
+  <img src="assets/demo-thumbnail.png" alt="Demo Video" width="500"/>
+</a>
+
 </p>
 
 
