@@ -105,7 +105,7 @@ CoreIT bridges the compute gap by enabling users to:
 ## ⚙️ Tech Stack
 
 <p align="center">
-  <img src="techstack.jpeg" width="80%" alt="Tech Stack">
+  <img src="techstack.jpg" width="80%" alt="Tech Stack">
 </p>
 
 ### 🧑‍💻 Frontend
