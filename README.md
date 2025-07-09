@@ -7,7 +7,6 @@
 
 
 Watch how ResourceX discovers idle compute resources, distributes demanding workloads like AI training and 3D rendering, and returns results securely — fully automated, fully decentralized!
-🔗 [Watch the Demo](https://youtu.be/b3HCJWUALpQ)
 
 ## Problem Statement
 Access to high-performance computing is expensive and centralized, limiting students, indie developers, and researchers who need to train AI models, render graphics, or handle large data. At the same time, millions of personal devices with powerful CPUs and GPUs sit idle, lacking a secure, trusted, and rewarding way to share their compute power. There's no decentralized, user-friendly platform that connects those who need computing with those who can provide it!
