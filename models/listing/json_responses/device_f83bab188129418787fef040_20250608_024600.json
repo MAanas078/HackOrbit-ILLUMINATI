@@ -1,0 +1,43 @@
+{
+  "_id": {
+    "$oid": "f83bab188129418787fef040"
+  },
+  "owner": {
+    "$oid": "67fb74763aa6907125bda830"
+  },
+  "deviceName": "Mobile Phone",
+  "deviceType": "GPU",
+  "specs": {
+    "manufacturer": "Android",
+    "model": "GPU Analyzer",
+    "vram": "Unknown",
+    "memoryTotal": "Unknown"
+  },
+  "performance": 79.970703125,
+  "price": 200,
+  "availableHours": [
+    {
+      "start": {
+        "$date": "2025-06-08T02:46:00.190231Z"
+      },
+      "end": {
+        "$date": "2025-06-11T02:46:00.190231Z"
+      },
+      "_id": {
+        "$oid": "756560ef20b44aa891b22919"
+      }
+    }
+  ],
+  "isAvailable": false,
+  "location": "Raipur, India",
+  "acceptedTaskTypes": [
+    "AI Training"
+  ],
+  "createdAt": {
+    "$date": "2025-06-08T02:46:00.190231Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-08T02:46:00.190231Z"
+  },
+  "__v": 0
+}

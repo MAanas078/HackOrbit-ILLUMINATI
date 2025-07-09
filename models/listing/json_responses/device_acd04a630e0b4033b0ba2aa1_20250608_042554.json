@@ -1,0 +1,43 @@
+{
+  "_id": {
+    "$oid": "acd04a630e0b4033b0ba2aa1"
+  },
+  "owner": {
+    "$oid": "67fb74763aa6907125bda830"
+  },
+  "deviceName": "Smartphone",
+  "deviceType": "GPU",
+  "specs": {
+    "manufacturer": "Samsung",
+    "model": "A528U/DS",
+    "vram": "",
+    "memoryTotal": ""
+  },
+  "performance": 79.970703125,
+  "price": 200,
+  "availableHours": [
+    {
+      "start": {
+        "$date": "2025-06-08T04:25:54.234766Z"
+      },
+      "end": {
+        "$date": "2025-06-11T04:25:54.234766Z"
+      },
+      "_id": {
+        "$oid": "bd1ab38af13049e6813bf7da"
+      }
+    }
+  ],
+  "isAvailable": false,
+  "location": "Raipur, India",
+  "acceptedTaskTypes": [
+    "AI Training"
+  ],
+  "createdAt": {
+    "$date": "2025-06-08T04:25:54.234766Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-08T04:25:54.234766Z"
+  },
+  "__v": 0
+}

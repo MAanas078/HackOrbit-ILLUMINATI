@@ -1,0 +1,43 @@
+{
+  "_id": {
+    "$oid": "c8d4a3d649e2471cb13410b4"
+  },
+  "owner": {
+    "$oid": "67fb74763aa6907125bda830"
+  },
+  "deviceName": "Headphones",
+  "deviceType": "Audio",
+  "specs": {
+    "manufacturer": "JBL",
+    "model": "Tune",
+    "vram": null,
+    "memoryTotal": null
+  },
+  "performance": 79.970703125,
+  "price": 200,
+  "availableHours": [
+    {
+      "start": {
+        "$date": "2025-06-08T03:15:27.382161Z"
+      },
+      "end": {
+        "$date": "2025-06-11T03:15:27.382161Z"
+      },
+      "_id": {
+        "$oid": "9c1f3bde6dae4caeb345d33f"
+      }
+    }
+  ],
+  "isAvailable": false,
+  "location": "Raipur, India",
+  "acceptedTaskTypes": [
+    "AI Training"
+  ],
+  "createdAt": {
+    "$date": "2025-06-08T03:15:27.382161Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-08T03:15:27.382161Z"
+  },
+  "__v": 0
+}

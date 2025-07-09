@@ -1,0 +1,43 @@
+{
+  "_id": {
+    "$oid": "d5a18cef5be5446f9672997a"
+  },
+  "owner": {
+    "$oid": "67fb74763aa6907125bda830"
+  },
+  "deviceName": "OnePlus 7T",
+  "deviceType": "GPU",
+  "specs": {
+    "manufacturer": "Qualcomm",
+    "model": "Adreno 640",
+    "vram": null,
+    "memoryTotal": null
+  },
+  "performance": 79.970703125,
+  "price": 200,
+  "availableHours": [
+    {
+      "start": {
+        "$date": "2025-06-08T02:30:52.708899Z"
+      },
+      "end": {
+        "$date": "2025-06-11T02:30:52.708899Z"
+      },
+      "_id": {
+        "$oid": "575148bca8fd4415b7d89fe2"
+      }
+    }
+  ],
+  "isAvailable": false,
+  "location": "Raipur, India",
+  "acceptedTaskTypes": [
+    "AI Training"
+  ],
+  "createdAt": {
+    "$date": "2025-06-08T02:30:52.708899Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-08T02:30:52.708899Z"
+  },
+  "__v": 0
+}

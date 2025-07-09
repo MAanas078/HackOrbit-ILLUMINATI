@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPU Device Analyzer</title>
+    <style>
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --secondary: #a855f7;
+            --accent: #c084fc;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --bg-primary: #000000;
+            --bg-secondary: #0f0f23;
+            --bg-card: #1a0b2e;
+            --text-primary: #ffffff;
+            --text-secondary: #c4b5fd;
+            --border: #4c1d95;
+            --glass: rgba(139, 92, 246, 0.15);
+            --indigo-deep: #312e81;
+            --violet-deep: #581c87;
+            --purple-glow: rgba(168, 85, 247, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--indigo-deep) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(124, 58, 237, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, var(--primary) 0%, var(--secondary) 40%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: pulse 3s ease-in-out infinite;
+            filter: blur(20px);
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 60%);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: pulse 3s ease-in-out infinite reverse;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.4; }
+            50% { transform: translateX(-50%) scale(1.3); opacity: 0.7; }
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 30px var(--purple-glow);
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .analyzer-card {
+            background: linear-gradient(145deg, rgba(26, 11, 46, 0.9), rgba(15, 15, 35, 0.8));
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(139, 92, 246, 0.1),
+                inset 0 1px 0 rgba(139, 92, 246, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analyzer-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), var(--accent), var(--secondary), transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        .analyzer-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 48%, rgba(139, 92, 246, 0.03) 50%, transparent 52%);
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .upload-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(145deg, rgba(76, 29, 149, 0.1), rgba(26, 11, 46, 0.2));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-zone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(139, 92, 246, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--primary);
+            background: linear-gradient(145deg, rgba(139, 92, 246, 0.15), rgba(168, 85, 247, 0.1));
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.2);
+        }
+
+        .upload-zone:hover::before {
+            opacity: 1;
+        }
+
+        .upload-zone.dragover {
+            border-color: var(--accent);
+            background: linear-gradient(145deg, rgba(168, 85, 247, 0.2), rgba(192, 132, 252, 0.15));
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.3);
+        }
+
+        .upload-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .webcam-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .webcam-container {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--glass);
+        }
+
+        #webcam {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 16px;
+        }
+
+        .form-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(145deg, rgba(139, 92, 246, 0.08), rgba(76, 29, 149, 0.1));
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: linear-gradient(145deg, rgba(139, 92, 246, 0.12), rgba(168, 85, 247, 0.08));
+            box-shadow: 
+                0 0 0 3px rgba(139, 92, 246, 0.2),
+                0 10px 25px rgba(139, 92, 246, 0.1);
+        }
+
+        .select-field {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23c4b5fd' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+
+        .select-field option{
+    color: #000000;
+    background: #ffffff;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn:hover:before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark), var(--violet-deep));
+            color: white;
+            box-shadow: 
+                0 10px 25px rgba(139, 92, 246, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 15px 35px rgba(139, 92, 246, 0.4),
+                0 5px 15px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), var(--accent), #d8b4fe);
+            color: white;
+            box-shadow: 
+                0 10px 25px rgba(168, 85, 247, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 15px 35px rgba(168, 85, 247, 0.4),
+                0 5px 15px rgba(192, 132, 252, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .results-section {
+            background: linear-gradient(145deg, rgba(34, 197, 94, 0.1), rgba(139, 92, 246, 0.05));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.1);
+        }
+
+        .results-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--success), var(--primary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .spec-item {
+            background: linear-gradient(145deg, rgba(139, 92, 246, 0.08), rgba(76, 29, 149, 0.1));
+            padding: 1rem;
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.1);
+        }
+
+        .spec-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .spec-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            display: none;
+            backdrop-filter: blur(15px);
+        }
+
+        .error-message {
+            background: linear-gradient(145deg, rgba(239, 68, 68, 0.15), rgba(139, 92, 246, 0.05));
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+        }
+
+        .success-message {
+            background: linear-gradient(145deg, rgba(34, 197, 94, 0.15), rgba(139, 92, 246, 0.05));
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            color: #a7f3d0;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(168, 85, 247, 0.08));
+            animation: float 8s ease-in-out infinite;
+            filter: blur(2px);
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 15%;
+            left: 8%;
+            animation-delay: 0s;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(124, 58, 237, 0.06));
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 180px;
+            height: 180px;
+            top: 55%;
+            right: 8%;
+            animation-delay: 2.5s;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(192, 132, 252, 0.05));
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 18%;
+            left: 18%;
+            animation-delay: 5s;
+            background: linear-gradient(135deg, rgba(196, 181, 253, 0.08), rgba(139, 92, 246, 0.04));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            33% { transform: translateY(-25px) rotate(120deg) scale(1.1); }
+            66% { transform: translateY(15px) rotate(240deg) scale(0.9); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .upload-section {
+                grid-template-columns: 1fr;
+            }
+
+            .form-section {
+                grid-template-columns: 1fr;
+            }
+
+            .analyzer-card {
+                padding: 1.5rem;
+            }
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 12px;
+            margin-top: 1rem;
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(139, 92, 246, 0.2);
+        }
+
+        .webcam-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            z-index: 1000;
+            backdrop-filter: blur(15px);
+        }
+
+        .connection-online {
+            background: linear-gradient(145deg, rgba(34, 197, 94, 0.2), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            color: #a7f3d0;
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.2);
+        }
+
+        .connection-offline {
+            background: linear-gradient(145deg, rgba(239, 68, 68, 0.2), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <div class="connection-status" id="connectionStatus">
+        🔍 Checking connection...
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>GPU Device Analyzer</h1>
+            <p>Upload an image or use your webcam to detect and analyze GPU specifications with AI</p>
+        </div>
+
+        <div class="analyzer-card">
+            <div class="upload-section">
+                <div class="upload-zone" id="fileUploadZone">
+                    <div class="upload-icon">📁</div>
+                    <h3>Upload Image</h3>
+                    <p>Drag and drop your GPU image here or click to browse</p>
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                    <img id="previewImage" class="preview-image" style="display: none;">
+                </div>
+
+                <div class="webcam-section">
+                    <div class="upload-icon">📸</div>
+                    <h3>Use Webcam</h3>
+                    <div class="webcam-container">
+                        <video id="webcam" autoplay playsinline style="display: none;"></video>
+                        <canvas id="canvas" style="display: none;"></canvas>
+                    </div>
+                    <div class="webcam-controls">
+                        <button class="btn btn-secondary" id="startWebcam">Start Camera</button>
+                        <button class="btn btn-primary" id="captureBtn" style="display: none;">Capture Image</button>
+                        <button class="btn btn-secondary" id="stopWebcam" style="display: none;">Stop Camera</button>
+                    </div>
+                </div>
+            </div>
+
+            <form id="deviceForm">
+                <div class="form-section">
+                    <div class="input-group">
+                        <label for="deviceName">Device Name *</label>
+                        <input type="text" id="deviceName" name="deviceName" class="input-field" placeholder="e.g., RTX 4090 Gaming Rig" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="deviceType">Device Type *</label>
+                        <select id="deviceType" name="deviceType" class="input-field select-field" required>
+                            <option value="">Select device type</option>
+                            <option value="GPU">GPU</option>
+                            <option value="CPU">CPU</option>
+                            <option value="RAM">RAM</option>
+                            <option value="Storage">Storage</option>
+                            <option value="Full System">Full System</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="price">Price per Hour ($) *</label>
+                        <input type="number" id="price" name="price" class="input-field" placeholder="0.50" step="0.01" min="0" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="location">Location *</label>
+                        <input type="text" id="location" name="location" class="input-field" placeholder="e.g., New York, USA" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="acceptedTaskTypes">Accepted Task Types</label>
+                        <select id="acceptedTaskTypes" name="acceptedTaskTypes" class="input-field select-field" multiple>
+                            <option value="AI Training">AI Training</option>
+                            <option value="3D Rendering">3D Rendering</option>
+                            <option value="Cryptocurrency Mining">Cryptocurrency Mining</option>
+                            <option value="Video Processing">Video Processing</option>
+                            <option value="Scientific Computing">Scientific Computing</option>
+                            <option value="Game Development">Game Development</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="isAvailable">Availability</label>
+                        <select id="isAvailable" name="isAvailable" class="input-field select-field">
+                            <option value="true">Available</option>
+                            <option value="false">Not Available</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button type="button" class="btn btn-primary" id="analyzeBtn">
+                        <span id="analyzeText">🔍 Analyze Device with AI</span>
+                        <span id="loadingSpinner" class="loading" style="display: none;"></span>
+                    </button>
+                </div>
+            </form>
+
+            <div id="errorMessage" class="error-message message"></div>
+
+            <div id="resultsSection" class="results-section">
+                <div class="results-header">
+                    <div class="results-icon">✅</div>
+                    <div>
+                        <h3>AI Analysis Complete</h3>
+                        <p>Device specifications detected successfully</p>
+                    </div>
+                </div>
+
+                <div class="specs-grid" id="specsGrid">
+                    <!-- Specs will be populated here -->
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button type="button" class="btn btn-primary" id="saveDeviceBtn">
+                        💾 Save Device
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class DeviceAnalyzer {
+            constructor() {
+                this.currentImageData = null;
+                this.analysisResult = null;
+                this.webcamStream = null;
+                this.backendUrl = 'http://localhost:5002'; // Flask backend URL
+                this.initializeEventListeners();
+                this.checkBackendConnection();
+            }
+
+            async checkBackendConnection() {
+                try {
+                    const response = await fetch(`${this.backendUrl}/`, {
+                        method: 'GET',
+                        mode: 'cors'
+                    });
+                    
+                    if (response.ok) {
+                        this.updateConnectionStatus(true);
+                    } else {
+                        this.updateConnectionStatus(false);
+                    }
+                } catch (error) {
+                    console.error('Backend connection failed:', error);
+                    this.updateConnectionStatus(false);
+                }
+            }
+
+            updateConnectionStatus(isOnline) {
+                const statusEl = document.getElementById('connectionStatus');
+                if (isOnline) {
+                    statusEl.textContent = '✅ AI Backend Connected';
+                    statusEl.className = 'connection-status connection-online';
+                } else {
+                    statusEl.textContent = '❌ AI Backend Offline';
+                    statusEl.className = 'connection-status connection-offline';
+                }
+                
+                // Hide status after 3 seconds if online
+                if (isOnline) {
+                    setTimeout(() => {
+                        statusEl.style.display = 'none';
+                    }, 3000);
+                }
+            }
+
+            initializeEventListeners() {
+                // File upload
+                const fileInput = document.getElementById('fileInput');
+                const uploadZone = document.getElementById('fileUploadZone');
+                
+                uploadZone.addEventListener('click', () => fileInput.click());
+                uploadZone.addEventListener('dragover', this.handleDragOver.bind(this));
+                uploadZone.addEventListener('dragleave', this.handleDragLeave.bind(this));
+                uploadZone.addEventListener('drop', this.handleDrop.bind(this));
+                fileInput.addEventListener('change', this.handleFileSelect.bind(this));
+
+                // Webcam controls
+                document.getElementById('startWebcam').addEventListener('click', this.startWebcam.bind(this));
+                document.getElementById('captureBtn').addEventListener('click', this.captureImage.bind(this));
+                document.getElementById('stopWebcam').addEventListener('click', this.stopWebcam.bind(this));
+
+                // Analysis and save
+                document.getElementById('analyzeBtn').addEventListener('click', this.analyzeDevice.bind(this));
+                document.getElementById('saveDeviceBtn').addEventListener('click', this.saveDevice.bind(this));
+            }
+
+            handleDragOver(e) {
+                e.preventDefault();
+                e.currentTarget.classList.add('dragover');
+            }
+
+            handleDragLeave(e) {
+                e.currentTarget.classList.remove('dragover');
+            }
+
+            handleDrop(e) {
+                e.preventDefault();
+                e.currentTarget.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    this.processFile(files[0]);
+                }
+            }
+
+            handleFileSelect(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    this.processFile(file);
+                }
+            }
+
+            processFile(file) {
+                if (!file.type.startsWith('image/')) {
+                    this.showError('Please select a valid image file.');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.currentImageData = { type: 'file', data: file };
+                    this.showImagePreview(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+
+            showImagePreview(src) {
+                const preview = document.getElementById('previewImage');
+                preview.src = src;
+                preview.style.display = 'block';
+            }
+
+            async startWebcam() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ 
+                        video: { width: 640, height: 480 } 
+                    });
+                    
+                    this.webcamStream = stream;
+                    const video = document.getElementById('webcam');
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+                    
+                    document.getElementById('startWebcam').style.display = 'none';
+                    document.getElementById('captureBtn').style.display = 'inline-flex';
+                    document.getElementById('stopWebcam').style.display = 'inline-flex';
+                } catch (error) {
+                    this.showError('Failed to access webcam: ' + error.message);
+                }
+            }
+
+            captureImage() {
+                const video = document.getElementById('webcam');
+                const canvas = document.getElementById('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                ctx.drawImage(video, 0, 0);
+                
+                const dataUrl = canvas.toDataURL('image/jpeg');
+                this.currentImageData = { type: 'webcam', data: dataUrl };
+                this.showImagePreview(dataUrl);
+            }
+
+            stopWebcam() {
+                if (this.webcamStream) {
+                    this.webcamStream.getTracks().forEach(track => track.stop());
+                    this.webcamStream = null;
+                }
+                
+                const video = document.getElementById('webcam');
+                video.style.display = 'none';
+                video.srcObject = null;
+                
+                document.getElementById('startWebcam').style.display = 'inline-flex';
+                document.getElementById('captureBtn').style.display = 'none';
+                document.getElementById('stopWebcam').style.display = 'none';
+            }
+
+            async analyzeDevice() {
+                if (!this.currentImageData) {
+                    this.showError('Please select an image or capture one using the webcam.');
+                    return;
+                }
+
+                this.setLoading(true);
+                this.hideError();
+
+                try {
+                    const result = await this.callBackendAnalysis();
+                    this.analysisResult = result;
+                    this.displayResults(result);
+                } catch (error) {
+                    console.error('Analysis failed:', error);
+                    this.showError('Analysis failed: ' + error.message);
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            async callBackendAnalysis() {
+                const formData = new FormData();
+                
+                if (this.currentImageData.type === 'file') {
+                    // File upload
+                    formData.append('image', this.currentImageData.data);
+                } else if (this.currentImageData.type === 'webcam') {
+                    // Webcam capture - send as base64
+                    formData.append('webcam_image', this.currentImageData.data);
+                }
+
+                const response = await fetch(`${this.backendUrl}/analyze`, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'cors'
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+                    throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                return await response.json();
+            }
+
+            displayResults(result) {
+                const specs = result.specs || {};
+                const specsGrid = document.getElementById('specsGrid');
+                
+                specsGrid.innerHTML = '';
+                
+                // Display basic device info
+                this.addSpecItem(specsGrid, 'Device Name', result.deviceName || 'Unknown');
+                this.addSpecItem(specsGrid, 'Device Type', result.deviceType || 'Unknown');
+                this.addSpecItem(specsGrid, 'Performance Score', result.performance?.toFixed(1) + '/100' || 'N/A');
+                
+                // Display detected specs
+                Object.entries(specs).forEach(([key, value]) => {
+                    if (value && value !== 'Unknown' && value !== '0 MB') {
+                        this.addSpecItem(specsGrid, this.formatSpecKey(key), value);
+                    }
+                });
+
+                // Add additional fields from the backend response
+                if (result.location) {
+                    this.addSpecItem(specsGrid, 'Location', result.location);
+                }
+                if (result.price) {
+                    this.addSpecItem(specsGrid, 'Price per Hour', `$${result.price}`);
+                }
+                if (result.acceptedTaskTypes && result.acceptedTaskTypes.length > 0) {
+                    this.addSpecItem(specsGrid, 'Accepted Tasks', result.acceptedTaskTypes.join(', '));
+                }
+
+                // Auto-fill form with detected data
+                this.populateForm(result);
+                
+                document.getElementById('resultsSection').style.display = 'block';
+                
+                // Scroll to results
+                document.getElementById('resultsSection').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+
+            addSpecItem(container, label, value) {
+                const specItem = document.createElement('div');
+                specItem.className = 'spec-item';
+                specItem.innerHTML = `
+                    <div class="spec-label">${label}</div>
+                    <div class="spec-value">${value}</div>
+                `;
+                container.appendChild(specItem);
+            }
+
+            formatSpecKey(key) {
+                const keyMap = {
+                    'manufacturer': 'Manufacturer',
+                    'model': 'Model',
+                    'vram': 'VRAM',
+                    'memoryTotal': 'Total Memory'
+                };
+                
+                return keyMap[key] || key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+            }
+
+            populateForm(result) {
+                // Only populate if fields are empty
+                const deviceNameField = document.getElementById('deviceName');
+                if (!deviceNameField.value && result.deviceName) {
+                    deviceNameField.value = result.deviceName;
+                }
+
+                const deviceTypeField = document.getElementById('deviceType');
+                if (!deviceTypeField.value && result.deviceType) {
+                    deviceTypeField.value = result.deviceType;
+                }
+
+                const priceField = document.getElementById('price');
+                if (!priceField.value && result.price) {
+                    priceField.value = result.price;
+                }
+
+                const locationField = document.getElementById('location');
+                if (!locationField.value && result.location) {
+                    locationField.value = result.location;
+                }
+
+                const availabilityField = document.getElementById('isAvailable');
+                if (result.isAvailable !== undefined) {
+                    availabilityField.value = result.isAvailable.toString();
+                }
+
+                // Handle accepted task types
+                const taskTypesField = document.getElementById('acceptedTaskTypes');
+                if (result.acceptedTaskTypes && result.acceptedTaskTypes.length > 0) {
+                    Array.from(taskTypesField.options).forEach(option => {
+                        if (result.acceptedTaskTypes.includes(option.value)) {
+                            option.selected = true;
+                        }
+                    });
+                }
+            }
+
+// Corrected saveDevice function with proper error handling
+async saveDevice() {
+    if (!this.analysisResult) {
+        this.showError('Please analyze a device first.');
+        return;
+    }
+
+                // Improved getCookie function that handles edge cases
+const getCookie = (name) => {
+    // Handle case where document.cookie is empty or undefined
+    if (!document.cookie) {
+        return null;
+    }
+    
+    // Create a regex pattern to match the cookie name
+    const nameEQ = name + "=";
+    const cookies = document.cookie.split(';');
+    
+    for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i];
+        // Remove leading spaces
+        while (cookie.charAt(0) === ' ') {
+            cookie = cookie.substring(1);
+        }
+        // Check if this cookie starts with our target name
+        if (cookie.indexOf(nameEQ) === 0) {
+            return cookie.substring(nameEQ.length, cookie.length);
+        }
+    }
+    return null;
+};
+
+// Alternative more robust version using regex
+const getCookieRegex = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+        const cookieValue = parts.pop().split(';').shift();
+        // Additional check to ensure we got a valid value
+        return cookieValue && cookieValue.trim() !== '' ? cookieValue : null;
+    }
+    return null;
+};
+    
+    // Check if user is authenticated - get token from cookies
+    const token = getCookie('token');
+    
+    if (!token || token.trim() === '') {
+        this.showError('Please log in to save devices.');
+        return;
+    }
+    
+    console.log('Token found:', token); // Debug log to verify token
+    
+    const formData = new FormData(document.getElementById('deviceForm'));
+    
+    // Prepare device data according to your backend schema
+    const deviceData = {
+        deviceName: formData.get('deviceName'),
+        deviceType: formData.get('deviceType'),
+        specs: this.analysisResult.specs || {},
+        performance: this.analysisResult.performance || 50,
+        price: parseFloat(formData.get('price')),
+        location: formData.get('location'),
+        isAvailable: formData.get('isAvailable') === 'true',
+        acceptedTaskTypes: Array.from(formData.getAll('acceptedTaskTypes')),
+        availableHours: []
+    };
+    
+    // Add any additional specs from analysis result
+    if (this.analysisResult.manufacturer) {
+        deviceData.specs.manufacturer = this.analysisResult.manufacturer;
+    }
+    if (this.analysisResult.model) {
+        deviceData.specs.model = this.analysisResult.model;
+    }
+    if (this.analysisResult.vram) {
+        deviceData.specs.vram = this.analysisResult.vram;
+    }
+    if (this.analysisResult.memoryTotal) {
+        deviceData.specs.memoryTotal = this.analysisResult.memoryTotal;
+    }
+    
+    console.log('Sending device data:', deviceData); // Debug log
+    
+    try {
+        // First, check if the main backend is running
+        const healthCheck = await fetch('http://localhost:5000/api/health', {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+            }
+        }).catch(() => null);
+        
+        if (!healthCheck || !healthCheck.ok) {
+            throw new Error('Main backend server (port 5000) is not running. Please start your backend server.');
+        }
+        
+        const response = await fetch('http://localhost:5000/api/device/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(deviceData),
+            mode: 'cors'
+        });
+        
+        console.log('Response status:', response.status); // Debug log
+        
+        if (response.ok) {
+            const savedDevice = await response.json();
+            console.log('Device saved successfully:', savedDevice);
+            this.showSuccess('Device saved successfully! It\'s now listed and available for rent.');
+            this.resetForm();
+        } else {
+            const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+            
+            if (response.status === 401) {
+                this.showError('Authentication failed. Please log in again.');
+                // Clear invalid token from cookie
+                document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            } else if (response.status === 400) {
+                this.showError(`Validation error: ${errorData.message || errorData.error || 'Invalid device data'}`);
+            } else if (response.status === 404) {
+                this.showError('API endpoint not found. Please check if your backend server is running correctly.');
+            } else {
+                throw new Error(errorData.error || errorData.message || `Server returned ${response.status}: ${response.statusText}`);
+            }
+        }
+    } catch (error) {
+        console.error('Save failed:', error);
+        
+        // Handle different types of network errors
+        if (error.name === 'TypeError' || error.message.includes('fetch')) {
+            this.showError('Unable to connect to server. Please ensure your backend server is running on http://localhost:5000');
+        } else if (error.message.includes('CORS')) {
+            this.showError('CORS error: Please check your backend CORS configuration.');
+        } else if (error.message.includes('backend server')) {
+            this.showError(error.message);
+        } else {
+            this.showError('Failed to save device: ' + error.message);
+        }
+    }
+}
+
+            resetForm() {
+                document.getElementById('deviceForm').reset();
+                document.getElementById('resultsSection').style.display = 'none';
+                document.getElementById('previewImage').style.display = 'none';
+                this.currentImageData = null;
+                this.analysisResult = null;
+                this.stopWebcam();
+            }
+
+            setLoading(isLoading) {
+                const analyzeBtn = document.getElementById('analyzeBtn');
+                const analyzeText = document.getElementById('analyzeText');
+                const loadingSpinner = document.getElementById('loadingSpinner');
+
+                if (isLoading) {
+                    analyzeBtn.disabled = true;
+                    analyzeText.style.display = 'none';
+                    loadingSpinner.style.display = 'inline-block';
+                } else {
+                    analyzeBtn.disabled = false;
+                    analyzeText.style.display = 'inline';
+                    loadingSpinner.style.display = 'none';
+                }
+            }
+
+            showError(message) {
+                const errorEl = document.getElementById('errorMessage');
+                errorEl.textContent = message;
+                errorEl.style.display = 'block';
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    errorEl.style.display = 'none';
+                }, 5000);
+            }
+
+            hideError() {
+                document.getElementById('errorMessage').style.display = 'none';
+            }
+
+            showSuccess(message) {
+                const successEl = document.createElement('div');
+                successEl.className = 'success-message message';
+                successEl.textContent = message;
+                successEl.style.display = 'block';
+                
+                const container = document.querySelector('.analyzer-card');
+                container.appendChild(successEl);
+                
+                // Auto-hide and remove after 3 seconds
+                setTimeout(() => {
+                    successEl.remove();
+                }, 3000);
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            new DeviceAnalyzer();
+        });
+
+        // Handle online/offline status
+        window.addEventListener('online', () => {
+            document.getElementById('connectionStatus').textContent = '✅ Connection Restored';
+            document.getElementById('connectionStatus').className = 'connection-status connection-online';
+        });
+
+        window.addEventListener('offline', () => {
+            document.getElementById('connectionStatus').textContent = '❌ Connection Lost';
+            document.getElementById('connectionStatus').className = 'connection-status connection-offline';
+        });
+    </script>
+</body>
+</html>

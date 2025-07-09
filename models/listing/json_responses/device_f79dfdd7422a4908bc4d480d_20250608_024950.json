@@ -1,0 +1,43 @@
+{
+  "_id": {
+    "$oid": "f79dfdd7422a4908bc4d480d"
+  },
+  "owner": {
+    "$oid": "67fb74763aa6907125bda830"
+  },
+  "deviceName": "OnePlus Phone",
+  "deviceType": "Mobile Phone",
+  "specs": {
+    "manufacturer": "OnePlus",
+    "model": null,
+    "vram": null,
+    "memoryTotal": null
+  },
+  "performance": 79.970703125,
+  "price": 200,
+  "availableHours": [
+    {
+      "start": {
+        "$date": "2025-06-08T02:49:50.576299Z"
+      },
+      "end": {
+        "$date": "2025-06-11T02:49:50.576299Z"
+      },
+      "_id": {
+        "$oid": "e2feebd4674b4b70b4d0bf34"
+      }
+    }
+  ],
+  "isAvailable": false,
+  "location": "Raipur, India",
+  "acceptedTaskTypes": [
+    "AI Training"
+  ],
+  "createdAt": {
+    "$date": "2025-06-08T02:49:50.576299Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-08T02:49:50.576299Z"
+  },
+  "__v": 0
+}

@@ -1,0 +1,43 @@
+{
+  "_id": {
+    "$oid": "24e6936b22e74f25a8cf3fde"
+  },
+  "owner": {
+    "$oid": "67fb74763aa6907125bda830"
+  },
+  "deviceName": "Samsung Galaxy A52s 5G",
+  "deviceType": "GPU",
+  "specs": {
+    "manufacturer": "Samsung",
+    "model": "Adreno 642L",
+    "vram": null,
+    "memoryTotal": null
+  },
+  "performance": 79.970703125,
+  "price": 200,
+  "availableHours": [
+    {
+      "start": {
+        "$date": "2025-06-08T04:26:24.868623Z"
+      },
+      "end": {
+        "$date": "2025-06-11T04:26:24.868623Z"
+      },
+      "_id": {
+        "$oid": "6c13c288fb504c269ca6b5cb"
+      }
+    }
+  ],
+  "isAvailable": false,
+  "location": "Raipur, India",
+  "acceptedTaskTypes": [
+    "AI Training"
+  ],
+  "createdAt": {
+    "$date": "2025-06-08T04:26:24.868623Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-08T04:26:24.868623Z"
+  },
+  "__v": 0
+}

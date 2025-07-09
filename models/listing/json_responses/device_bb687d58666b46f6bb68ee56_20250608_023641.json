@@ -1,0 +1,43 @@
+{
+  "_id": {
+    "$oid": "bb687d58666b46f6bb68ee56"
+  },
+  "owner": {
+    "$oid": "67fb74763aa6907125bda830"
+  },
+  "deviceName": "OnePlus 11",
+  "deviceType": "GPU",
+  "specs": {
+    "manufacturer": "Qualcomm",
+    "model": "Adreno 740",
+    "vram": "Not Applicable",
+    "memoryTotal": "8-16 GB"
+  },
+  "performance": 79.970703125,
+  "price": 200,
+  "availableHours": [
+    {
+      "start": {
+        "$date": "2025-06-08T02:36:41.602473Z"
+      },
+      "end": {
+        "$date": "2025-06-11T02:36:41.602473Z"
+      },
+      "_id": {
+        "$oid": "edb3ce7d056f492997758287"
+      }
+    }
+  ],
+  "isAvailable": false,
+  "location": "Raipur, India",
+  "acceptedTaskTypes": [
+    "AI Training"
+  ],
+  "createdAt": {
+    "$date": "2025-06-08T02:36:41.602473Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-08T02:36:41.602473Z"
+  },
+  "__v": 0
+}
