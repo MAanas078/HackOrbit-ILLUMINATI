@@ -1,134 +1,205 @@
-# Project Time line
+### Project Timeline
 ```
 HackOrbit-Day-1 08-july-2025
-cp-1 -> 1st commit done at 1 PM initialise the project structure and working on frontend
-cp-2 -> 2nd commit done at 4 PM start the frontend working and rendring the components and pages on the browser
-cp-3 -> 3rd commit done at 6 PM working on authentication and basic UI
-cp-4 -> 4th commit done at 8 PM finished the frontend working api`s
+ cp-1 -> 1st commit done at 1 PM initialise the project structure and working on frontend
+ cp-2 -> 2nd commit done at 4 PM start the frontend working and rendring the components and pages on the browser
+ cp-3 -> 3rd commit done at 6 PM working on authentication and basic UI
+ cp-4 -> 4th commit done at 8 PM finished the frontend working api`s
 
-Day-2 9-july-2025
-cp-1 -> 1st commit done at 1 PM initialise the project structure and working on backend and ML models
-cp-2 -> 2nd commit 4 pm test the backend API`s and implement the blender model
-cp-3 -> 3rd commit at 6 PM finalise the project
+HackOrbit-Day-2 09-july-2025
+ cp-1 -> 1st commit done at 1 PM initialise the project structure and working on backend and ML models
+ cp-2 -> 2nd commit 4 pm test the backend API`s and implement the blender model
+ cp-3 -> 3rd commit at 6 PM finalise the project
 ```
 
-# Dev.env-ResourceX
+---
+
 <p align="center">
-  <a href="https://youtu.be/b3HCJWUALpQ" target="_blank">
-    <img src="assets/ChatGPT Image May 29, 2025 at 03_26_37 PM.png" alt="Watch the Demo Video" width="720">
-  </a>
+  <img src="logo(2).png" width="80%" alt="Logo">
 </p>
 
 
+<h1 align="center">🔗 CoreIT - Compute Without Limits</h1>
 
-Watch how ResourceX discovers idle compute resources, distributes demanding workloads like AI training and 3D rendering, and returns results securely — fully automated, fully decentralized!
-
-## 🚀 Demo
-
-[![Demo Video](https://i.imgur.com/GPpnszs.png)](https://drive.google.com/file/d/1IJS0NevdinO0FMelMn3gjSyDxQX4UWoL/view?usp=drive_link)
-
-🔗 [Click here to watch the demo](https://drive.google.com/file/d/1IJS0NevdinO0FMelMn3gjSyDxQX4UWoL/view?usp=drive_link)
-
-
-
-## Problem Statement
-Access to high-performance computing is expensive and centralized, limiting students, indie developers, and researchers who need to train AI models, render graphics, or handle large data. At the same time, millions of personal devices with powerful CPUs and GPUs sit idle, lacking a secure, trusted, and rewarding way to share their compute power. There's no decentralized, user-friendly platform that connects those who need computing with those who can provide it!
-
-## Current Challenges
-High cost of cloud compute (AWS, GCP, Azure)
-Limited free access (e.g., Google Colab timeouts)
-No incentive or platform to contribute unused resources
-Privacy & trust concerns with existing peer-to-peer systems
-Exclusion of developers from under-resourced regions
-
-***Case-Study***
-Meet Person X – a CS student pushing their AI model to improve, but stuck at 60% accuracy. The lab’s full, cloud credits are gone, and deadlines are closing in.
-
-Across town, Person Y – a freelancer with a powerful PC (RTX 4080, 64GB RAM) that mostly sits idle.
-
-🌀 For Users like X: Affordable, on-demand access to GPU, CPU, and storage—no middlemen, no inflated costs.
-
-⚡ For Providers like Y: Turn idle hardware into income. Securely share resources, powered by blockchain and zero-knowledge proofs.
----
-
-
-## Architecture
 <p align="center">
-  <img src="assets/ChatGPT Image May 29, 2025, 04_42_22 PM.png" alt="Alt text" width="720"/>
+  <b>A decentralized distributed job execution system</b><br>
+  <i>Rent & utilize idle compute power securely for AI, 3D rendering, and large-scale tasks.</i>
 </p>
 
-## TechStack
+---
+
+## 🚨 Problem
+
+> Access to high-performance computing is **expensive**, **centralized**, and **inaccessible** for many — especially students, indie developers, and under-resourced regions.
+
+💡 **60% of personal devices** stay **idle most of the day**, wasting potential compute resources.
+
+---
+
+## 💡 Solution: CoreIT
+
+CoreIT bridges the compute gap by enabling users to:
+
+- 📤 Upload jobs (AI, graphics, compute-heavy)
+- 🧠 Execute them securely on idle machines (lenders)
+- 🔐 Ensure privacy using **Zero Knowledge Proofs**
+- 💸 Reward providers via **Solana Blockchain**
+
+---
+
+## 📘 Real-World Scenarios
+
+### 👩‍🎓 Aisha – The Struggling Student
+
+> Aisha is building a **Blender animation** and an AI model on **neural style transfer**.  
+> Her **4GB RAM laptop crashes** frequently, and **Google Colab times out**.
+
+✅ With **CoreIT**, Aisha:
+- Uploads code securely
+- Leverages a high-end lender's GPU
+- Gets results fast, at low cost — **without exposing her code**
+
 <p align="center">
-  <img src="assets/WhatsApp Image 2025-05-29 at 17.47.33.jpeg" alt="Alt text" width="720"/>
+  <img src="aisha.png" width="80%" alt="Logo">
+</p>
+---
+
+### 👨‍💻 Arnav – The Idle GPU Owner
+
+> Arnav owns a **powerful RTX 4080 PC** that's idle during the day.  
+> He wants to **earn passively** but values **security and privacy**.
+
+✅ With **CoreIT**, Arnav:
+- Accepts containerized jobs
+- Executes tasks in an **encrypted sandbox**
+- Earns micro-payments securely without seeing any client code
+
+<p align="center">
+  <img src="arnav.png" width="80%" alt="Logo">
+</p>
+---
+
+## 🧠 System Architecture
+
+<p align="center">
+  <img src="architecture.png" width="80%" alt="Architecture Overview">
 </p>
 
+### 🔐 Client Flow
+1. Authenticate & upload code
+2. Code is zipped & containerized
+3. Stored temporarily on **Google Cloud**
+4. Pushed to **Docker Hub**
+5. Metadata is logged on **Solana Blockchain**
+6. Encrypted sandbox is created & verified
 
-## 📚 Table of Contents
-
-* [Features](#features)
-* [Project Structure](#project-structure)
-* [Requirements](#requirements)
-* [Installation](#installation)
-* [Usage](#usage)
-
-
----
-## 🔄 Features
-
-* **Modular Design**: Backend, frontend, and models are organized for scalability.
-* **Multi-language Support**: JavaScript (Node.js) backend, Python models, and React frontend.
-* **Resource Management**: Easily manage development resources and dependencies.
-* **Resource Exchange System**: Collaborative and scalable resource sharing.
-
-## 🔄 Device Interaction Flow
-
-* **Device Listing**: Devices register themselves in the system with specifications and availability status.
-* **Device Browsing & Requesting**: Users can browse available devices and send a request to rent based on task requirements.
-* **Code Dispatch**: Once the request is approved, the task code is securely transmitted to the selected device.
-* **Remote Execution**: The rented device executes the code using its compute resources.
-* **Result Delivery**: The output is sent back to the requester and optionally to the device owner (lender) for transparency or billing.
+### 🖥️ Lender Flow
+1. Lender authenticates & accepts job
+2. Pulls container from Docker Hub
+3. Executes inside sandbox
+4. Results returned securely to client
+5. Job queue managed via **Redis**
 
 ---
 
+## ⚙️ Tech Stack
+
+<p align="center">
+  <img src="techstack.jpeg" width="80%" alt="Tech Stack">
+</p>
+
+### 🧑‍💻 Frontend
+- **React.js**, **Three.js**, **Zustand**
+
+### 🔧 Backend
+- **Python**, **Node.js**, **FastAPI**, **Flask**
+- **MongoDB** – Sessions & logs
+- **Redis** – Job queueing
+
+### ☁️ DevOps & Infra
+- **Docker**, **Google Cloud**, **Docker Hub**
+- **OpenCV** – GPU health via webcam
+
+### 🔐 Security & Blockchain
+- **Zero-Knowledge Proofs (ZKP)**
+- **Solana** – On-chain reward & verification
+
+### 🤖 AI Tools
+- **Gemini**, **Groq** – AI risk scoring
+- **Chroma** – Code/data embeddings
+
+---
+
+## 🌟 Core Features
+
+| 🚀 Feature                | 💬 Description                                                                 |
+|--------------------------|--------------------------------------------------------------------------------|
+| 🔁 Remote Execution       | Removes dependency on cloud platforms like AWS or Colab                        |
+| 🔒 ZKP Security           | Guarantees code privacy even during 3rd-party execution                       |
+| 📦 Containerized Jobs     | Enables consistency, sandboxing, and platform independence                    |
+| 💸 Incentivization        | Allows idle hardware owners to earn income securely                           |
+| 🧑‍💻 Dev Tooling           | Seamless VS Code integration, no complex setup                                |
+
+---
+
+## ✨ What Makes CoreIT Unique?
+
+- ✅ **Zero Knowledge Execution**: Lender never sees client’s raw code
+- ⛓️ **Blockchain Logging**: Immutable job history stored on Solana
+- 💻 **Monetize Idle PCs**: Turn unused GPUs into income streams
+- 🧠 **AI-Ready Design**: Built for training, rendering, and heavy compute
+- 🕹️ **Web2 UX + Web3 Security**: Fast, modern UI with cryptographic backend
+
+---
 
 ## 📁 Project Structure
 
-```
+
 Dev.env-ResourceX/
+
 ├── backend/      # Backend code and services (Node.js)
+
 ├── blender/      # Blender-related scripts or integrations
+
 ├── frontend/     # Frontend code (JavaScript/HTML)
+
 ├── models/       # Data models or machine learning models
-```
+
 
 ---
 
-## ⚙️ Installation
+## ⚙ Installation
 
 ### Clone the repository:
 
-```bash
+bash
+ ```
 git clone https://github.com/priyadarshi7/Dev.env-ResourceX.git
 cd Dev.env-ResourceX
 ```
 
+
 ### Backend Setup (Node.js):
 
-Navigate to the `backend/` directory and install dependencies.
+Navigate to the backend/ directory and install dependencies.
 
-```bash
+bash
+```
 cd backend
 npm install
 ```
 
+
 ### Frontend Setup:
 
-Navigate to the `frontend/` directory and install dependencies.
+Navigate to the frontend/ directory and install dependencies.
 
-```bash
+bash
+```
 cd ../frontend
 npm install
 ```
+
 
 ### Blender Setup:
 
@@ -140,34 +211,39 @@ If using Blender scripts, ensure Blender is installed and properly configured.
 * Node.js & npm
 * Python 3.8+ (for models)
 * Blender (optional, for Blender scripts)
-* Other dependencies as specified in `package.json` or `requirements.txt`
+* Other dependencies as specified in package.json or requirements.txt
 ---
 
 ## 🧩 Usage
 
 ### Backend:
 
-Run the backend server from the `backend/` directory:
+Run the backend server from the backend/ directory:
 
-```bash
+bash
+```
 cd backend
 npm run dev
 ```
 
+
 ### Frontend:
 
-Serve or build the frontend from the `frontend/` directory:
+Serve or build the frontend from the frontend/ directory:
 
-```bash
+bash
+```
 cd frontend
 npm run dev
 ```
 
+
 ### Models:
 
-Use or train models as described in the `models/` directory's documentation.
+Use or train models as described in the models/ directory's documentation.
 
-```bash
+bash
+```
 cd models
 pip install -r requirements.txt
 uvicorn chat:app --reload
@@ -180,4 +256,20 @@ python app.py
 
 ---
 
+## 👥 Team ILLUMINATI – HackOrbit 2025
 
+| Name           | Role                      |
+|----------------|---------------------------|
+| 🧑‍💻 Zodrick John | Team Lead & Blockchain Dev |
+| 🧑‍💻 Mohd Aanas    | Backend Dev   |
+| 🧑‍💻 Farahim       | Frontend Dev |
+
+---
+
+## 🎬 Demo
+
+📺 _Coming Soon — Stay Tuned!_
+
+---
+
+## 📜 License
