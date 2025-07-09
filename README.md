@@ -25,9 +25,7 @@ Watch how ResourceX discovers idle compute resources, distributes demanding work
 
 ## 🚀 Demo
 
-## 🚀 Demo
-
-[![Demo Video]](https://drive.google.com/file/d/1IJS0NevdinO0FMelMn3gjSyDxQX4UWoL/view?usp=drive_link)
+[![Demo Video](https://i.imgur.com/GPpnszs.png)](https://drive.google.com/file/d/1IJS0NevdinO0FMelMn3gjSyDxQX4UWoL/view?usp=drive_link)
 
 🔗 [Click here to watch the demo](https://drive.google.com/file/d/1IJS0NevdinO0FMelMn3gjSyDxQX4UWoL/view?usp=drive_link)
 
