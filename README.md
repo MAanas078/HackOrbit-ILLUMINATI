@@ -173,12 +173,6 @@ Dev.env-ResourceX/
 
 ### Clone the repository:
 
-bash
- ```
-git clone https://github.com/priyadarshi7/Dev.env-ResourceX.git
-cd Dev.env-ResourceX
-```
-
 
 ### Backend Setup (Node.js):
 
