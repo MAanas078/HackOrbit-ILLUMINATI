@@ -19,11 +19,19 @@ const PORT = process.env.PORT || 5000;
 const __dirname = path.resolve();
 
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5000", "http://localhost:3000", "https://hackorbit-frontend.onrender.com","https://pre-hack-prix.vercel.app"],
+    origin: [
+        "http://localhost:5173",
+        "http://localhost:5000",
+        "http://localhost:3000",
+        "https://hackorbit-frontend.onrender.com",
+        "https://pre-hack-prix.vercel.app",
+        "https://coreit-three.vercel.app"   // 👈 yeh naya add karo
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
 
   
 app.use(express.json());
