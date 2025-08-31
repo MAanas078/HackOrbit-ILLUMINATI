@@ -6,17 +6,17 @@ export class ConfigConstants {
     //Server Configurations
     static PORT = process.env.PORT || 8000;
     static NODE_ENV = process.env.NODE_ENV || "development"
-    static APP_NAME = process.env.APP_NAME || "ResourceX";
+    static APP_NAME = process.env.APP_NAME || "COREIT";
 
     //Database
-    static MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/resource';
+    static MONGO_URL = process.env.MONGO_URL || 'mongodb+srv://pass:pass123@cluster0.c7jq7cx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
     //JWT
     static JWT_SECRET = process.env.JWT_SECRET
     static JWT_EXPIRE = process.env.JWT_EXPIRE || '7d';
 
     // Frontend URL
-    static FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+    static FRONTEND_URL = process.env.FRONTEND_URL || 'https://hackorbit-frontend.onrender.com';
 
     // Email Configuration
     static SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
