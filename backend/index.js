@@ -25,7 +25,8 @@ app.use(cors({
         "http://localhost:3000",
         "https://hackorbit-frontend.onrender.com",
         "https://pre-hack-prix.vercel.app",
-        "https://coreit-three.vercel.app"   // 👈 yeh naya add karo
+        "https://coreit-three.vercel.app",  
+        "http://localhost:8080"
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
